@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Pets List</title>
+  </head>
+  <body>
+    <h1>Pets List</h1>
+    <div id="pets-list"></div>
+
+    <script>
+      async function fetchPets() {
+        const response = await fetch("http://localhost:5000/pets");
+        const pets = await response.json();
+        const petsListDiv = document.getElementById("pets-list");
+        petsListDiv.innerHTML = "";
+
+        pets.forEach((pet) => {
+          const petDiv = document.createElement("div");
+          petDiv.innerHTML = `
+            <h2>${pet.name}</h2>
+            <p>Type: ${pet.type}</p>
+            <p>Age: ${pet.age}</p>
+            <hr/>
+          `;
+          petsListDiv.appendChild(petDiv);
+        });
+      }
+
+      // Fetch and display pets when the page loads
+      window.onload = fetchPets;
+    </script>
+  </body>
+</html>
