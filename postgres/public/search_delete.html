@@ -7,14 +7,37 @@
     <div>
       <input type="text" id="search-input" placeholder="Cerca per id" />
       <button id="search-button">Cerca</button>
+      <button id="delete-button">Elimina</button>
     </div>
     <div id="boards-container"></div>
   </body>
 
   <script type="text/javascript">
     const searchButton = document.getElementById("search-button");
+    const deleteButton = document.getElementById("delete-button");
     const searchInput = document.getElementById("search-input");
     const boardsContainer = document.getElementById("boards-container");
+
+    deleteButton.addEventListener("click", () => {
+      const query = searchInput.value.trim();
+      if (query) {
+        fetch(`http://localhost:5000/boards/${query}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((result) => {
+            boardsContainer.innerHTML = `<p>${result.message}</p>`;
+          })
+          .catch((error) => {
+            boardsContainer.innerHTML = `<p>${error.message}</p>`;
+          });
+      } else {
+        boardsContainer.innerHTML =
+          "<p>Per favore, inserisci un id di board valido.</p>";
+      }
+    });
 
     searchButton.addEventListener("click", () => {
       const query = searchInput.value.trim();

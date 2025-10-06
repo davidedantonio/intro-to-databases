@@ -26,7 +26,7 @@ app.get("/list", async (request, reply) => {
 });
 
 app.get("/search", async (request, reply) => {
-  return reply.sendFile("search.html");
+  return reply.sendFile("search_delete.html");
 });
 
 app.get("/boards", async (request, reply) => {
@@ -70,13 +70,13 @@ app.delete("/boards/:id", async (request, reply) => {
     ]);
 
     if (res.rowCount === 0) {
-      reply.status(404).send("Board not found");
+      reply.status(404).send({ message: "Board not found" });
     } else {
-      reply.status(204).send();
+      reply.status(200).send({ message: "Board deleted successfully" });
     }
   } catch (err) {
     app.log.error(err);
-    reply.status(500).send("Internal Server Error");
+    reply.status(500).send({ message: "Internal Server Error" });
   } finally {
     client.release();
   }
