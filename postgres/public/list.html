@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Lista Boards</title>
+  </head>
+  <body>
+    <h1>Lista Boards</h1>
+    <div id="boards-container"></div>
+  </body>
+
+  <script type="text/javascript">
+    fetch("http://localhost:5000/boards")
+      .then((response) => response.json())
+      .then((data) => {
+        const body = document.getElementById("boards-container");
+        body.innerHTML = "";
+        data.forEach((board) => {
+          const boardElement = document.createElement("div");
+          boardElement.innerHTML = `<h2>${board.board_id} - ${board.board_name}</h2><p>${board.board_description}</p>`;
+          body.appendChild(boardElement);
+        });
+      })
+      .catch((error) => console.error("Error fetching boards:", error));
+  </script>
+</html>

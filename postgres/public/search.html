@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>Cerca Boards</title>
+  </head>
+  <body>
+    <h1>Cerca Board</h1>
+    <div>
+      <input type="text" id="search-input" placeholder="Cerca per id" />
+      <button id="search-button">Cerca</button>
+    </div>
+    <div id="boards-container"></div>
+  </body>
+
+  <script type="text/javascript">
+    const searchButton = document.getElementById("search-button");
+    const searchInput = document.getElementById("search-input");
+    const boardsContainer = document.getElementById("boards-container");
+
+    searchButton.addEventListener("click", () => {
+      const query = searchInput.value.trim();
+      if (query) {
+        fetch(`http://localhost:5000/boards/${query}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Board non trovato");
+            }
+            return response.json();
+          })
+          .then((board) => {
+            boardsContainer.innerHTML = `<h2>${board.board_id} - ${board.board_name}</h2><p>${board.board_description}</p>`;
+          })
+          .catch((error) => {
+            boardsContainer.innerHTML = `<p>${error.message}</p>`;
+          });
+      } else {
+        boardsContainer.innerHTML =
+          "<p>Per favore, inserisci un id di board valido.</p>";
+      }
+    });
+  </script>
+</html>
