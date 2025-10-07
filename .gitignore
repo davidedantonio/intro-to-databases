@@ -1,1 +1,8 @@
 node_modules
+qdrant_storage
+*.log
+*.tmp
+.DS_Store
+.env
+.vscode
+
