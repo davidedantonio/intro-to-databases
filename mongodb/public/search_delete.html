@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <title>Pets List</title>
+  </head>
+  <body>
+    <h1>Pets List</h1>
+    <input type="text" id="pet-id-input" placeholder="Enter Pet ID" />
+    <button id="search-button">Search Pet</button>
+    <button id="delete-button">Delete Pet</button>
+    <div id="pets-list"></div>
+
+    <script>
+      const searchButton = document.getElementById("search-button");
+      const deleteButton = document.getElementById("delete-button");
+      const petIdInput = document.getElementById("pet-id-input");
+      const petsListDiv = document.getElementById("pets-list");
+
+      searchButton.addEventListener("click", async () => {
+        const petId = petIdInput.value;
+        if (!petId) {
+          alert("Please enter a Pet ID.");
+          return;
+        }
+
+        try {
+          const response = await fetch(`http://localhost:5000/pets/${petId}`);
+          if (response.ok) {
+            const pet = await response.json();
+            petsListDiv.innerHTML = `
+              <h2>${pet.name}</h2>
+              <p>ID: ${pet._id}</p>
+              <p>Name: ${pet.name}</p>
+              <p>Type: ${pet.type}</p>
+              <p>Age: ${pet.age}</p>
+              <p>Breed: ${pet.breed}</p>
+              <hr/>
+            `;
+          } else {
+            petsListDiv.innerHTML = "<p>Pet not found.</p>";
+          }
+        } catch (error) {
+          console.error("Error fetching pet:", error);
+          petsListDiv.innerHTML = "<p>Error fetching pet data.</p>";
+        }
+      });
+
+      deleteButton.addEventListener("click", async () => {
+        const petId = petIdInput.value;
+        if (!petId) {
+          alert("Please enter a Pet ID.");
+          return;
+        }
+
+        try {
+          const response = await fetch(`http://localhost:5000/pets/${petId}`, {
+            method: "DELETE",
+          });
+          if (response.ok) {
+            petsListDiv.innerHTML = "<p>Pet deleted successfully.</p>";
+          } else {
+            petsListDiv.innerHTML = "<p>Failed to delete pet.</p>";
+          }
+        } catch (error) {
+          console.error("Error deleting pet:", error);
+          petsListDiv.innerHTML = "<p>Error deleting pet.</p>";
+        }
+      });
+    </script>
+  </body>
+</html>

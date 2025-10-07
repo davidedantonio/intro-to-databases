@@ -17,8 +17,11 @@
           const petDiv = document.createElement("div");
           petDiv.innerHTML = `
             <h2>${pet.name}</h2>
+            <p>ID: ${pet._id}</p>
+            <p>Name: ${pet.name}</p>
             <p>Type: ${pet.type}</p>
             <p>Age: ${pet.age}</p>
+            <p>Breed: ${pet.breed}</p>
             <hr/>
           `;
           petsListDiv.appendChild(petDiv);
